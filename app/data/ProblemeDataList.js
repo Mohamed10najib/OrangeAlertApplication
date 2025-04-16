@@ -1,0 +1,17 @@
+export default  ProblemeDataList = [
+    { label: 'Connexion Internet lente', value: 'connexion_lente' },
+    { label: 'Coupures fréquentes d’Internet', value: 'coupures_internet' },
+    { label: 'Aucun accès à Internet', value: 'pas_acces_internet' },
+    { label: 'Faible débit', value: 'faible_debit' },
+    { label: 'Application ou site web ne se charge pas', value: 'app_site_non_charge' },
+    { label: 'Problème données mobiles', value: 'probleme_data_mobile' },
+    { label: 'Ping élevé', value: 'ping_eleve' },
+    { label: 'Déconnexion lors du streaming/jeu', value: 'deconnexion_streaming_jeu' },
+    { label: 'Problèmes APN', value: 'problemes_apn' },
+    { label: 'Données épuisées rapidement', value: 'donnees_epuisees' },
+    { label: 'Impossible de partager la connexion', value: 'pas_partage_connexion' },
+    { label: 'Signal Wi-Fi faible', value: 'signal_wifi_faible' },
+    { label: 'Débit limité malgré bon signal', value: 'debit_limite' },
+    { label: 'Problème de téléchargement', value: 'probleme_telechargement' },
+    { label: 'Blocage de certains sites/apps', value: 'blocage_sites_apps' },
+  ];

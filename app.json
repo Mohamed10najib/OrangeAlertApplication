@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "OrangeAlert",
+    "slug": "OrangeAlertAppV1",
+    "version": "2.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/images/OrangeIcon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/OrangeIcon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.mohamednajib.OrangeAlertAppV1",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/OrangeIcon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b09f48d3-f9df-423f-aae0-623dfa2d4a92"
+      }
+    }
+  }
+}
