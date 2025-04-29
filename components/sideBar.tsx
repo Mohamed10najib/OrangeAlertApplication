@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Option from './option';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SideBarProps {
   closeSideBar: Function;
@@ -16,7 +15,29 @@ const SideBar: React.FC<SideBarProps> = ({ closeSideBar,namePage }) => {
     OnriaSans: require('../assets/fonts/InriaSans-Bold.ttf'),
   });
   const router = useRouter();
- 
+  const [userName,setUserName]=useState("");
+  async function  Deconnexion () {
+   await AsyncStorage.setItem('token',"");
+   router.push("/auth/login");
+  }
+    useEffect (()=>{
+      const fetchUserName = async () => {
+        try {
+          const firstName = await AsyncStorage.getItem('firstName');
+          const lastName = await AsyncStorage.getItem('lastName');
+          if (userName !== null) {
+            console.log('UserName:', userName);
+            setUserName(firstName+" "+lastName);
+          } else {
+            console.log('No userName found');
+          }
+        } catch (e) {
+          console.error('Error retrieving userName:', e);
+        }
+      };
+  
+      fetchUserName();
+    },[])  
   return (
     <>
       <View style={styles.container}>
@@ -37,7 +58,7 @@ const SideBar: React.FC<SideBarProps> = ({ closeSideBar,namePage }) => {
             </View>
             <View style={styles.containerChild12}>
               <Text style={{ lineHeight: 30, fontWeight: 'bold', color: '#B7B7B7' }}>Collaborateur</Text>
-              <Text style={{ lineHeight: 30, fontWeight: 'medium', color: 'white' }}>Mohamed Najib</Text>
+              <Text style={{ lineHeight: 30, fontWeight: 'medium', color: 'white' }}>{userName}</Text>
             </View>
           </View>
         </View>
@@ -61,7 +82,7 @@ const SideBar: React.FC<SideBarProps> = ({ closeSideBar,namePage }) => {
           <TouchableOpacity>
             <Option isHere={namePage=="settings"} nameOption="Paramètres" iconName="settings" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>{router.push("/auth/login")}}>
+          <TouchableOpacity onPress={()=>{Deconnexion()}}>
             <Option isHere={false} nameOption="Déconnexion" iconName="log-out" />
           </TouchableOpacity>
         </View>

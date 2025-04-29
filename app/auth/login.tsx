@@ -4,13 +4,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import InputFiled from '../../components/InputFiled';
 import { useRouter } from 'expo-router';
-import { Stack } from 'expo-router';
-import {
-  
- 
-  clearDeclarations
-  
-} from '../data/declarationStorage';
+import AuthenticationService from '../Services/ServiceImplement/AuthenticationService';
+import AuthenticationServiceInterface from '../Services/ServiceInterface/AuthenticationServiceInterface';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const LoginScreen = () => {
   const router = useRouter();
   const [fontsLoaded] = useFonts({
@@ -21,6 +18,7 @@ const LoginScreen = () => {
  const [isInCorrect, setIsInCorrect] = useState(false);
  const [InputPassword, setInputPassword] = useState("");
  const [InputNumber, setInputNumber] = useState("");
+  const AuthService:AuthenticationServiceInterface = new AuthenticationService();
 
  function  checkPassword (){
   
@@ -32,6 +30,35 @@ const LoginScreen = () => {
     setIsInCorrect(true);
    }
 
+ }
+const  handleLogin = async()=>{
+  try {
+    
+    const response = await AuthService.login({
+      username: InputNumber.trim(),
+      password: InputPassword.trim(),
+    });
+    console.log('Login in successfully:', response);
+    try {
+      await AsyncStorage.setItem('token', response.token);
+      await AsyncStorage.setItem('firstName', response.firstname);
+      await AsyncStorage.setItem('lastName', response.lastname);
+      console.log('Token saved successfully!');
+    } catch (e) {
+      console.error('Failed to save token', e);
+    }
+    
+    router.push('/mainPages/home');
+    
+  } catch (err:any) {
+    /*console.error(err);*/
+    setIsInCorrect(true);
+    if (err.response && err.response.status === 401) {
+      alert("Invalid username or password");
+    } else {
+      alert("An unexpected error occurred. Please try again later.");
+    }
+  }
  }
  const handleChangePassword = (text: string) => {
   setInputPassword(text);
@@ -64,13 +91,13 @@ const handleChangeNumber = (text: string) => {
           </View>
           <View style={styles.ContainerChild4}>
             <View>
-              <TouchableOpacity onPress={ () => checkPassword()} style={styles.button1}>
+              <TouchableOpacity onPress={ () => handleLogin()} style={styles.button1}>
                 <Text style={styles.buttonText1}>Se connecter</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.ContainerChild42}>
               <Text style={styles.ContainerChildText1}>Vous n'avez pas de compte ?</Text>
-              <Text style={styles.ContainerChildText2}>Créer un compte</Text>
+             <TouchableOpacity onPress={ () => {router.push('/auth/register/registerFirstStep')}}><Text style={styles.ContainerChildText2}>Créer un compte</Text></TouchableOpacity> 
             </View>
             
           </View>

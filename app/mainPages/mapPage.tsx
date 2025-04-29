@@ -1,7 +1,7 @@
 
 
-import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React, { FC, useState } from 'react';
+import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity, ScrollView,ActivityIndicator } from 'react-native';
+import React, { FC, useState,useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/header';
@@ -20,7 +20,7 @@ interface  location {
 const mapPage = () => {
     const router = useRouter();
       const {Ap,At,id} = useLocalSearchParams();
-    
+      const [loading, setLoading] = useState(true);
 
     const [Isopen, setOpen] = useState(false);
     
@@ -93,6 +93,8 @@ const mapPage = () => {
         </body>
       </html>
     `;
+   
+
     return (
       <>
         <SafeAreaProvider>
@@ -114,7 +116,13 @@ const mapPage = () => {
        <Text style = {{fontSize:16,fontFamily:'Poppins-Bold',paddingLeft:20}}>Adresse affichée sur la carte</Text>
           <View style={styles.container2}>
           <View style={styles.mapContainer}>
-      <WebView originWhitelist={['*']} source={{ html }} style={styles.webview} />
+          {loading && (
+                  <View style ={styles.spinnerContainer} >
+                    <ActivityIndicator size="large" color="#EFB036" />
+                  </View>
+                )}
+      <WebView originWhitelist={['*']} source={{ html }} style={styles.webview}  onLoadStart={() => setLoading(true)} // ✅ Show spinner
+                onLoad={() => setLoading(false)}/>
     </View>
    
    {/*<MapView
@@ -212,7 +220,13 @@ const styles = StyleSheet.create({
         color :'orange',
         paddingTop:7
       },
-      
+      spinnerContainer :{
+        position :'absolute',
+        top :'40%',
+        left :'45%',
+        zIndex :1000
+      },
+
       container2Text1Name :{color :'orange'},
       buttonText1: {
         color: 'white',

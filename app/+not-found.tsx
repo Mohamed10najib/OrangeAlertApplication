@@ -6,7 +6,7 @@ import { StyleSheet ,View,Text} from 'react-native';
 export default function NotFoundScreen() {
   return (
    <View>
-   <Text>Not found</Text>
+   <Text> Page Not Found</Text>
    </View>
   );
 }

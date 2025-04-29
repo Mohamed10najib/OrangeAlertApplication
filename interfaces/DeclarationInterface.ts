@@ -1,16 +1,21 @@
+import {StatusEnum} from '../Enums/EnumStatus';
+
+
 export default interface DeclarationInterface {
     id: number;
-    titre: string;
     description: string;
-    date: string; 
-    type:string; 
-    status:string; 
-    adressComplet:string;
-    ville:string;
-    Attitude:string;
-    Aptitude:string;
-    debit?:number;
-    NatureProbleme:string,
-    reponse:string,
-
-}
+    dateDeCreation: string; 
+    dateDeResolution: string; 
+    reponse: string;
+    typeDeProbleme: string;
+    typeDeExact: string;
+    altitude: number;
+    adressComplet: string;
+    ville: string;
+    debit: number;
+    longitude: number;
+    status: string;
+    userId: number;
+    natureProbleme: string;
+  }
+  

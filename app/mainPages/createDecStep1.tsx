@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/header';
 import SideBar from '../../components/sideBar';
@@ -12,10 +12,29 @@ import InputFiled from '@/components/InputFiled';
 import { useRouter } from 'expo-router';
 import SelectComponent from '../../components/select';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const CreateDecStep1 = () => {
   
     const [errorMsg, setErrorMsg] = useState("");
+    const [userName,setUserName]=useState("");
+    useEffect (()=>{
+      const fetchUserName = async () => {
+        try {
+          const userName = await AsyncStorage.getItem('firstName');
+          if (userName !== null) {
+            console.log('UserName:', userName);
+            setUserName(userName);
+          } else {
+            console.log('No userName found');
+          }
+        } catch (e) {
+          console.error('Error retrieving userName:', e);
+        }
+      };
   
+      fetchUserName();
+    },[])  
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -102,7 +121,7 @@ const CreateDecStep1 = () => {
                  </View>
            </View>
            <View style={styles.container2}>
-            <View style ={styles.container21} ><Text style ={styles.container2Text1}>Bonjour</Text><Text style ={[styles.container2Text1,styles.container2Text1Name]}> Mohamed</Text></View>
+            <View style ={styles.container21} ><Text style ={styles.container2Text1}>Bonjour </Text><Text style ={[styles.container2Text1,styles.container2Text1Name]}> {userName} </Text></View>
             <Text style ={styles.container2Text2}>Ici, vous pouvez déclarer vos problèmes de réseau en toute simplicité !</Text>
            </View>
            <View style={styles.container3}>

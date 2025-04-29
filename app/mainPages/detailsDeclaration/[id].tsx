@@ -16,12 +16,55 @@ import { useFonts } from 'expo-font';
 import DeclarationInterface from '@/interfaces/DeclarationInterface';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { getDeclaration } from '../../data/declarationStorage';
+import Circle from '@/components/circle';
+import Line from '@/components/line';
+import DeclarationServiceInterface from '@/app/Services/ServiceInterface/DeclarationServiceInterface';
+import DeclarationsServiceImplement from '@/app/Services/ServiceImplement/DeclarationsServiceImplement';
 
 const DetailsDeclaration = () => {
+  const serviceDeclarationImplement :DeclarationServiceInterface = new DeclarationsServiceImplement() ;
+
   function capitalizeFirstLetter(str: string): string {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
+  const iconMap:any = {
+    // Problèmes Data
+    connexion_lente: 'wifi',
+    coupures_internet: 'wifi-off',
+    pas_acces_internet: 'x-circle',
+    faible_debit: 'trending-down',
+    app_site_non_charge: 'alert-circle',
+    probleme_data_mobile: 'smartphone',
+    ping_eleve: 'activity',
+    deconnexion_streaming_jeu: 'video-off',
+    problemes_apn: 'settings',
+    donnees_epuisees: 'loader',
+    pas_partage_connexion: 'share-2',
+    signal_wifi_faible: 'wifi',
+    debit_limite: 'minus-circle',
+    probleme_telechargement: 'download-cloud',
+    blocage_sites_apps: 'slash',
+  
+    // Problèmes Voix
+    appels_interrompus: 'phone-off',
+    pas_appels: 'x-octagon',
+    reseau_indisponible: 'alert-triangle',
+    pas_entendu: 'volume-x',
+    qualite_son_mediocre: 'volume-2',
+    echo_grésillement: 'volume',
+    numero_non_joignable: 'phone-missed',
+    connexion_appel_lente: 'clock',
+    appels_pas_aboutis: 'x-circle',
+    appels_sans_sonnerie: 'bell-off',
+    repondeur_auto: 'voicemail',
+    numero_bloque: 'slash',
+    probleme_internationaux: 'globe',
+    pas_sms_envoyer: 'message-circle',
+    erreur_reseau_appel: 'alert-octagon',
+  };
+  
+
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const idNumber = parseInt(id as string);
@@ -37,13 +80,35 @@ const DetailsDeclaration = () => {
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
     'Poppins-SemiBold': require('../../../assets/fonts/Poppins-SemiBold.ttf'),
   });
-
+   const [NameIconProbleme,setNameIconProbleme] =useState("");
+  
+ React.useEffect(() => {
+    const icon = iconMap[declaration?.typeDeExact as string] || 'help-circle';
+    setNameIconProbleme(icon);
+  }, [declaration?.typeDeExact]);
   useEffect(() => {
     const fetchDeclaration = async () => {
       const data = await getDeclaration(idNumber);
       setDeclaration(data);
     };
     fetchDeclaration();
+    const fetchData = async ()=>{
+      try {
+        const response = await serviceDeclarationImplement.getDeclaration(parseInt(id as string));
+        
+        console.log("data:", response);
+        console.log("successfull"); 
+        if(response){
+          setDeclaration(response);
+        }
+        
+        
+      } catch (error:any) {
+        console.error("Error fetching data:", error.message);
+      }
+  
+    }
+    fetchData();
   }, []);
 
   if (!fontsLoaded) return null;
@@ -61,7 +126,6 @@ const DetailsDeclaration = () => {
               isClosable={true}
               url="/mainPages/home"
             />
-
             <View style={styles.container1}>
               <View style={styles.container11}>
                 <TouchableOpacity
@@ -87,21 +151,29 @@ const DetailsDeclaration = () => {
                 <View style={styles.container211}>
                   <View style={styles.container2111}>
                     <View style={styles.container21111}>
-                      <Icon name="wifi" size={40} color="white" />
+                      <Icon name={NameIconProbleme} size={40} color="black" />
                     </View>
                     <View style={styles.container21112}>
                       <Text style ={styles.container21112Text1} >{capitalizeFirstLetter(declaration?.ville as string)}</Text>
-                      <Text style={styles.container21112Text}>{declaration?.date.split(",")[0]}</Text>
+                      <Text style={styles.container21112Text}>{declaration?.dateDeCreation.split("T")[0]}</Text>
                     </View>
                   </View>
 
                   <View style={styles.container2112}>
                     <Text style={styles.container2112Text1}>
-                      {capitalizeFirstLetter(declaration?.titre.replace("_"," ") as string)}
+                      {capitalizeFirstLetter(declaration?.typeDeExact.replaceAll("_"," ") as string)}
                     </Text>
                     <Text style={styles.container2112Text2}>
-                      {declaration?.type}
+                      {declaration?.typeDeProbleme}
                     </Text>
+                    {declaration?.natureProbleme.toLowerCase()=="permanent"?<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+  <Icon name="alert-triangle" size={24} color="red" />
+  <Text style={{ marginLeft: 8 }}>Permanent</Text>
+</View>
+                   :<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Icon name="clock" size={24} color="#FFF085" />
+                   <Text style={{ marginLeft: 8 }}>Temporaire</Text>
+                 </View>  }
                   </View>
                 </View>
 
@@ -113,7 +185,7 @@ const DetailsDeclaration = () => {
                       </Text>
                       <TouchableOpacity
                         onPress={() => {
-                          router.push(`/mainPages/mapPage?Ap=${declaration?.Aptitude}&&At=${declaration?.Attitude}&&id=${declaration?.id}`);
+                          router.push(`/mainPages/mapPage?Ap=${declaration?.altitude}&&At=${declaration?.longitude}&&id=${declaration?.id}`);
                         }}
                       >
                         <Icon name="map" size={40} color="orange" />
@@ -124,7 +196,7 @@ const DetailsDeclaration = () => {
                       <Text style={styles.container21212Text}>Statut</Text>
                       <View style={styles.state}>
                         <Text style={styles.stateText}>
-                          {declaration?.status}
+                          {capitalizeFirstLetter(declaration?.status.replaceAll("_"," ") as string)}
                         </Text>
                       </View>
                     </View>
@@ -169,6 +241,41 @@ const DetailsDeclaration = () => {
                   <Text style={styles.textMain}>{SeeMoreReponse?declaration?.reponse:declaration?.reponse.slice(0,100)}.</Text>
                   {(declaration&&declaration?.reponse.length>100)&&(SeeMoreReponse?<TouchableOpacity onPress={()=>{setSeeMoreReponse(false)}}><Text style={styles.textMore}>See less</Text></TouchableOpacity>:<TouchableOpacity onPress={()=>{setSeeMoreReponse(true)}}><Text style={styles.textMore}>See more</Text></TouchableOpacity>)}
                   </View>
+                  <View style={[styles.container214 ]}>
+                  <Text style={styles.textTitre}>Processus de déclaration</Text>
+                  <View style ={{justifyContent:'center',flex:1,display:'flex',flexDirection:'row',alignItems :'center',paddingBottom:30}}>
+                  <View style={{marginRight :30,marginLeft :-50}}>
+                  <Circle color={'orange'} borderColor={'orange'}></Circle>
+                  <View style={{position :'absolute' ,top :10,zIndex :1000,width :80,left :-20}}><Text style={styles.textStatus}>En attente</Text></View>
+
+                  </View>
+                  <View style ={styles.StatusInAtive}><Line color={'gray'} borderColor={'gray'}></Line></View>
+                  
+                  <View style={[{marginRight :30,marginLeft:30},styles.StatusInAtive]}>
+                  <Circle color={'#3B82F6'} borderColor={'#3B82F6'}></Circle>
+                  <View style={{position :'absolute' ,top :10,zIndex :1000,width :70,left :-20}}><Text style={styles.textStatus}>En cours</Text></View>
+                  </View>
+                  
+                  <View>
+                  <View style={[{position :'relative',top:2, transform: [{ rotate: '-10deg' }] },styles.StatusInAtive]}>
+                  <Line color="gray" borderColor="gray" />
+                  </View>
+                  <View style={[{position :'relative',top:-12,right:-40,marginLeft:30},styles.StatusInAtive]}>
+                    <Circle color={'#10B981'} borderColor={'#10B981'}></Circle>
+                    <View style={{position :'absolute' ,top :10,zIndex :1000,width :70,left :-20}}><Text style={styles.textStatus}>Résolue</Text></View>
+                  </View>
+                  <View style={[{position :'relative',top:8, transform: [{ rotate: '10deg' }] },styles.StatusInAtive]}>
+                  <Line color="gray" borderColor="gray" />
+                  </View>
+                  <View style={[{position :'relative',top:10,right:-40,marginLeft:30},styles.StatusInAtive]}>
+                    <Circle color={'#EF4444'} borderColor={'#EF4444'}></Circle>
+                    <View style={{position :'absolute' ,top :10,zIndex :1000,width :70,left :-20}}><Text style={styles.textStatus}>Rejetée</Text></View>
+                  </View>  
+                  </View>
+                  
+                  </View>
+                  
+                  </View>
               </ScrollView>
             </View>
           </View>
@@ -195,6 +302,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     paddingLeft: 10,
     paddingTop: 8,
+  },
+  textStatus :{
+    fontFamily: 'Poppins-Regular',
+    paddingTop :3
+    
+  },
+  StatusInAtive : {opacity:0.6
   },
   textMain: {
     paddingLeft: 10,
@@ -280,6 +394,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
+    
   },
   container21112Text: {
     fontFamily: 'Poppins-Regular',

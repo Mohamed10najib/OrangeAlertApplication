@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/header';
 import SideBar from '../../components/sideBar';
 import { useRouter } from 'expo-router';
 
+
 const home = () => {
   const [Isopen, setOpen] = useState(false);
   const router = useRouter();
 
-  return (
+    return (
     <>
       <SafeAreaProvider>
         <SafeAreaView>

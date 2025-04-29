@@ -43,7 +43,7 @@ const InputFiled: React.FC<InputFieldProps> = ({
       {isForPassword && (
         <View style={styles.lockContainer}>
           <Icon name="lock" size={32} color="#5E6366" />
-          <View style={styles.point} />
+         { /*<View style={styles.point} />*/}
         </View>
       )}
       <View style={styles.inputWrapper}>

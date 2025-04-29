@@ -18,8 +18,12 @@ import {
   
 } from '../data/declarationStorage';
 import SearchInput from '@/components/searchInput';
+import DeclarationServiceInterface from '../Services/ServiceInterface/DeclarationServiceInterface';
+import DeclarationsServiceImplement from '../Services/ServiceImplement/DeclarationsServiceImplement';
+
 const ConsulterLesDeclarations = () => {
-   
+  const serviceDeclarationImplement :DeclarationServiceInterface = new DeclarationsServiceImplement() ;
+
     const router = useRouter();
     const [VilleFilter,SetVilleFilter] = useState("Tout");
     const [DateFilter,SetDateFilter] = useState("Tout");
@@ -45,7 +49,7 @@ const ConsulterLesDeclarations = () => {
     SetVilleFilter("Tous");
    }
    function filterFunction(ville: string, date: string, probleme: string, nature: string) {
-    // Filtrer à partir des données d'origine
+   
     let filtered = declarations;
   
     if (ville !== 'Tout') {
@@ -59,7 +63,7 @@ const ConsulterLesDeclarations = () => {
   
     if (probleme !== 'Tout') {
       filtered = filtered.filter((dec) =>
-        dec.type.toLowerCase().trim() === probleme.toLowerCase().trim()
+        dec.typeDeProbleme.toLowerCase().trim() === probleme.toLowerCase().trim()
       );
       SetProblemeFilter(probleme);
     } else {
@@ -68,7 +72,7 @@ const ConsulterLesDeclarations = () => {
   
     if (nature !== 'Tout') {
       filtered = filtered.filter((dec) =>
-        dec.NatureProbleme.toLowerCase().trim() === nature.toLowerCase().trim()
+        dec.natureProbleme.toLowerCase().trim() === nature.toLowerCase().trim()
       );
       SetNatureFilter(nature);
     } else {
@@ -76,31 +80,33 @@ const ConsulterLesDeclarations = () => {
     }
   
     if (date !== 'Tout') {
-      // Exemple : filtrer par date selon tes règles ("Aujourd’hui", "Cette semaine", etc.)
       SetDateFilter(date);
-      // Tu peux appliquer un filtre par date ici si nécessaire
     } else {
       SetDateFilter("Tout");
     }
   
-    // Mettre à jour les données filtrées
     setDeclarations(filtered);
   
-    // Fermer le filtre
     setopenFilter(false);
   
     console.log("Filtres appliqués:", ville, date, probleme, nature);
   }
     React.useEffect(() => {
-      // Get all declarations when the component mounts
-      const fetchDeclarations = async () => {
-        const data = await getDeclarations();
-        setDeclarations(data);
-        setDeclarationsBackUp(data);
-        setLoading(false);
-      };
-  
-      fetchDeclarations();
+      const fetchData = async ()=>{
+        try {
+          const response = await serviceDeclarationImplement.getAllDeclaration();
+          
+          console.log("data:", response);
+          console.log("successfull"); 
+          setDeclarations(response);
+          setDeclarationsBackUp(response);
+          setLoading(false);
+        } catch (error:any) {
+          console.error("Error fetching data:", error.message);
+        }
+    
+      }
+      fetchData();
     }, []);
     
    
@@ -140,7 +146,7 @@ const ConsulterLesDeclarations = () => {
           </View>
           : ( declarations.length==0?<View style={styles.container2}>
             <Text>Aucune declaration</Text>
-           <TouchableOpacity onPress={()=>{RestFilter()}}><Text style = {{color:'orange',fontWeight :'bold'}}>Rest Filter</Text></TouchableOpacity>
+          {(VilleFilter!="Tout" || DateFilter!="Tout" || NatureFilter!="Tout" || ProblemeFilter!="Tout")&&(<TouchableOpacity onPress={()=>{RestFilter()}}><Text style = {{color:'orange',fontWeight :'bold'}}>Rest Filter</Text></TouchableOpacity>)}
             </View>:
           <View style={styles.container2}>
            <ScrollView 

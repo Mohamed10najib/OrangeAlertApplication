@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "OrangeAlert",
+    "name": "OrangeAlertV1",
     "slug": "OrangeAlertAppV1",
     "version": "2.0.1",
     "orientation": "portrait",
@@ -12,6 +12,8 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/OrangeIcon.png",
         "backgroundColor": "#000000"
@@ -36,7 +38,9 @@
           "backgroundColor": "#000000"
         }
       ],
-      "expo-font"
+      "expo-font","@react-native-firebase/app",
+       "@react-native-firebase/auth"
+
     ],
     "experiments": {
       "typedRoutes": true

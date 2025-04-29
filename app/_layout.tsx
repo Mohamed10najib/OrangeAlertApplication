@@ -20,8 +20,13 @@ export default function Layout() {
         <Stack.Screen name="mainPages/consulterLesDeclarations" options={{ headerShown: false , animation: 'fade' }}  />
         <Stack.Screen name="mainPages/detailsDeclaration/[id]" options={{ headerShown: false , animation: 'fade' }}  />
         <Stack.Screen name="mainPages/mapPage" options={{ headerShown: false , animation: 'fade' }}  />
+        <Stack.Screen name="auth/register/registerFirstStep" options={{ headerShown: false , animation: 'fade' }}  />
+        <Stack.Screen name="auth/register/registerSecondStep" options={{ headerShown: false , animation: 'fade' }}  />
+        <Stack.Screen name="auth/register/registerThirdStep" options={{ headerShown: false , animation: 'fade' }}  />
+        <Stack.Screen name="auth/register/registerConfirmation" options={{ headerShown: false , animation: 'fade' }}  />
 
-
+        
+        
         
       </Stack>
       <StatusBar style="auto" />

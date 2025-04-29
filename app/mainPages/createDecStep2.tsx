@@ -16,7 +16,7 @@ import SelectComponent from '../../components/select'
 import ProblemeVoixList from '../data/ProblemeVoixList'; 
 import  ProblemeDataList from '../data/ProblemeDataList'; 
 import TextArea from '@/components/textArea';
-
+import {StatusEnum} from '../../Enums/EnumStatus';
 
 import {
   
@@ -25,15 +25,18 @@ import {
   
 } from '../data/declarationStorage';
 import DeclarationInterface from '@/interfaces/DeclarationInterface';
+import DeclarationServiceInterface from '../Services/ServiceInterface/DeclarationServiceInterface';
+import DeclarationsServiceImplement from '../Services/ServiceImplement/DeclarationsServiceImplement';
 const CreateDecStep2 = () => {
+  const serviceDeclarationImplement :DeclarationServiceInterface = new DeclarationsServiceImplement() ;
+
   const router = useRouter();
   const handleClear = async () => {
     await clearDeclarations();
     console.log('All declarations have been cleared!');
   };
   const { type,adressComplet,Attitude,Aptitude,ville} = useLocalSearchParams();
-  const [debitInternet,SetDebitInternet]=useState("");
-  const [NatureProbleme,SetNatureProbleme]=useState("");
+  const [NatureProbleme,SetNatureProbleme]=useState("Permanent");
   const [Description,SetDescription]=useState("");
   const [TypeExact,SetTypeExact]=useState(type=="Data"?"connexion_lente":"appels_interrompus");
   const [Isopen, setOpen] = useState(false);
@@ -53,23 +56,23 @@ const CreateDecStep2 = () => {
         const hour = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
         const declaration:DeclarationInterface ={
           id: Date.now(),
-          titre: TypeExact,
-          NatureProbleme: NatureProbleme,
-
+          typeDeExact: TypeExact,
+          natureProbleme: NatureProbleme,
           description: Description,
-          date: date + "," + hour,
+          dateDeCreation: new Date().toISOString(),
+          dateDeResolution: new Date().toISOString(),
           adressComplet: adressComplet + "",
           ville: ville + "",
-          Attitude: Attitude+"" ,
-          type: type + "",
-
-
-          Aptitude: Aptitude+"",
-          debit:speed as number  ,
-          status: 'En cours',
-          reponse: 'Merci pour votre signalement. Nous nous en occupons.'
+          altitude: parseFloat(Attitude + ""),
+          typeDeProbleme: type + "",
+          longitude: parseFloat(Aptitude + ""),
+          debit: speed as number,
+          status: StatusEnum.EN_ATTENTE,
+          reponse: 'Merci pour votre signalement. Nous nous en occupons.',
+          userId: 0
         }
         addDeclaration(declaration);
+        serviceDeclarationImplement.SaveDeclaration(declaration);
         router.push('/mainPages/confirmationDec');
       }
       const [Option,SetOption]=useState("");

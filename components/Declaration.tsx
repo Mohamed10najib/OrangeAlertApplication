@@ -17,13 +17,12 @@ const Declaration : React.FC<{declaration:DeclarationInterface}> = ({declaration
  const [NameIcon,setNameIcon] =useState("");
  const [NameIconProbleme,setNameIconProbleme] =useState("");
  const [ColorIcon,setColorIcon] =useState("");
- const [dateP, hour] = declaration.date.split(',');
+ const [dateP, hour] = declaration.dateDeCreation.split('T');
 function capitalizeFirstLetter(str: string): string {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
  const iconMap:any = {
-    // Problèmes Data
     connexion_lente: 'wifi',
     coupures_internet: 'wifi-off',
     pas_acces_internet: 'x-circle',
@@ -39,8 +38,6 @@ function capitalizeFirstLetter(str: string): string {
     debit_limite: 'minus-circle',
     probleme_telechargement: 'download-cloud',
     blocage_sites_apps: 'slash',
-  
-    // Problèmes Voix
     appels_interrompus: 'phone-off',
     pas_appels: 'x-octagon',
     reseau_indisponible: 'alert-triangle',
@@ -59,16 +56,16 @@ function capitalizeFirstLetter(str: string): string {
   };
   
   React.useEffect(() => {
-    const icon = iconMap[declaration.titre] || 'help-circle';
+    const icon = iconMap[declaration.typeDeExact] || 'help-circle';
     setNameIconProbleme(icon);
-  }, [declaration.titre]);
+  }, [declaration.typeDeExact]);
     
        React.useEffect(() => {
-        if(declaration.status === "En cours"){
+        if(capitalizeFirstLetter(declaration.status.replaceAll("_"," ")) === "En attente"){
             setNameIcon('clock');
             setColorIcon('#DAA400');
           
-        } else if(declaration.status === "Résolus") {
+        } else if(capitalizeFirstLetter(declaration.status.replaceAll("_"," ")) === "Résolus") {
             setNameIcon('check-circle');
             setColorIcon('#07864B');
           
@@ -85,7 +82,7 @@ function capitalizeFirstLetter(str: string): string {
         <Icon name={NameIconProbleme} size={30} color="#3C3D37" />
          </View>
         <View style ={styles.container112}>
-            <Text style ={styles.container112Text1}>{capitalizeFirstLetter(declaration.titre.toUpperCase().replace("_"," "))}</Text>
+            <Text style ={styles.container112Text1}>{capitalizeFirstLetter(declaration.typeDeExact.toUpperCase().replaceAll("_"," "))}</Text>
             <Text style ={styles.container112Text2}>{capitalizeFirstLetter(declaration.ville.toUpperCase())}</Text>
         </View>
      </View>
@@ -93,7 +90,7 @@ function capitalizeFirstLetter(str: string): string {
      <View style ={[styles.container121,{backgroundColor:ColorIcon, borderTopLeftRadius :4 ,
        borderBottomLeftRadius :4,flexDirection :'row'}]}>
         <Icon name={NameIcon} size={20} color="white" />
-      <Text style = {styles.container121Text }>{declaration.status}</Text>
+      <Text style = {styles.container121Text }>{capitalizeFirstLetter(declaration.status.replaceAll("_"," "))}</Text>
      </View>
      </View>
      </View>

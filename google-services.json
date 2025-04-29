@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712630803613",
+    "project_id": "orangealert-e029d",
+    "storage_bucket": "orangealert-e029d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712630803613:android:44c3109b6e48eb2e95c874",
+        "android_client_info": {
+          "package_name": "com.mohamednajib.OrangeAlertAppV1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUjHnWgtIXbtctyblBH1L_tfppg0WVr20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

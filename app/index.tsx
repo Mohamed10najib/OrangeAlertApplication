@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Platform,Text, View,ScrollView,Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { Route, useRouter } from 'expo-router';
 
 import Icon from 'react-native-vector-icons/Feather'; // Use Feather for wifi-exclamation
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';  // Importing Inter Font weights
@@ -33,7 +33,7 @@ export default function HomeScreen() {
       
    
     <TouchableOpacity onPress={ () => router.push('/auth/login')} style={styles.button1}><Text style={styles.buttonText1}>se connecter</Text></TouchableOpacity>
-    <TouchableOpacity style={styles.button2}><Text style={styles.buttonText2}>créer un compte</Text></TouchableOpacity>
+    <TouchableOpacity onPress={() => router.push("/auth/register/registerFirstStep")} style={styles.button2} ><Text style={styles.buttonText2}>créer un compte</Text></TouchableOpacity>
       
           </View>
     </View>
