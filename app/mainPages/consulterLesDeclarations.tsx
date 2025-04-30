@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/header';
 import SideBar from '../../components/sideBar';
-
 import Icon from 'react-native-vector-icons/Feather';
+
 import { useFonts } from 'expo-font'
 import Declaration from '@/components/Declaration';
 import DeclarationInterface from '@/interfaces/DeclarationInterface';
@@ -125,27 +125,30 @@ const ConsulterLesDeclarations = () => {
         <SafeAreaProvider>
           <SafeAreaView>
             <View style={styles.container}>
-            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); }} isClosable={true} url='/mainPages/home' />
+            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); } } isClosable={true} url='/mainPages/home' titre='Mes déclarations' ispage={true} />
            <View style={styles.container1}>
              <View style={styles.container11}>
                        <TouchableOpacity onPress={ () => {router.push(`/mainPages/home`);}}>
                        <Icon name="arrow-left" size={24} color="black" />
                        </TouchableOpacity>
                         </View>
-              <View style={styles.container12} >
-                <View><Text style={styles.textTitle}>Mes déclarations</Text></View>
+             {declarations.length!=0 && <View style={styles.container12} >
+                <View></View>
                 <TouchableOpacity onPress={()=>{}}>
                 <View style={styles.boxFilter}><TouchableOpacity onPress={()=>{openFilterFunction()}}><Text style={styles.textFilter}> Personnaliser les résultats</Text></TouchableOpacity><Icon name="filter" size={18} color="black" style={styles.IconFilter} /></View>
                 </TouchableOpacity>
+                </View>}
                 </View>
-           </View>
+         
           
           {isLoading?
           <View style={styles.container2}>
           <ActivityIndicator size="large" color="orange" />
           </View>
           : ( declarations.length==0?<View style={styles.container2}>
-            <Text>Aucune declaration</Text>
+            <Icon name='file' size={100} color='#DBDBDB'></Icon>
+            <Text style={styles.declarationText}>Vous n’avez encore rien déclaré.</Text>
+            <TouchableOpacity style={styles.buttonDeclare}><Text style ={styles.buttonDeclareText}>Declare Maintenant</Text></TouchableOpacity>
           {(VilleFilter!="Tout" || DateFilter!="Tout" || NatureFilter!="Tout" || ProblemeFilter!="Tout")&&(<TouchableOpacity onPress={()=>{RestFilter()}}><Text style = {{color:'orange',fontWeight :'bold'}}>Rest Filter</Text></TouchableOpacity>)}
             </View>:
           <View style={styles.container2}>
@@ -189,6 +192,29 @@ const styles = StyleSheet.create({
         height: height,
         display: 'flex',
       },
+      declarationText : {
+        fontFamily:'Poppins-Bold',
+        color :'gray',
+        fontSize :18,
+        marginTop :50
+      },
+      buttonDeclare :{
+        width :'80%',
+        height:50,
+        backgroundColor :'orange',
+        justifyContent :'center',
+        alignItems :'center',
+        borderRadius:10,
+       marginTop :50
+
+      },
+      buttonDeclareText : {
+        fontFamily:'Poppins-Bold',
+        color : 'white',
+        fontWeight :'bold',
+        fontSize :15
+
+      },
       boxFilter :{
 display :'flex',
         flexDirection :'row'
@@ -196,7 +222,7 @@ display :'flex',
       textTitle :{fontWeight :'semibold',
 
         fontFamily:'Poppins-Bold',
-        fontSize:16
+        fontSize:13
       },
       textFilter :{
         fontSize:10,

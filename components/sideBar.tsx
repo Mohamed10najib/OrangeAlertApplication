@@ -17,7 +17,9 @@ const SideBar: React.FC<SideBarProps> = ({ closeSideBar,namePage }) => {
   const router = useRouter();
   const [userName,setUserName]=useState("");
   async function  Deconnexion () {
-   await AsyncStorage.setItem('token',"");
+   await AsyncStorage.removeItem("token");
+   await AsyncStorage.removeItem("firstName");
+   await AsyncStorage.removeItem("lastName");
    router.push("/auth/login");
   }
     useEffect (()=>{

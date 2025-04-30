@@ -15,7 +15,7 @@ const home = () => {
       <SafeAreaProvider>
         <SafeAreaView>
           <View style={styles.container}>
-          <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); }} isClosable={false}  url='/mainPages/home'/>
+          <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); } } isClosable={false} url='/mainPages/home' titre={''} ispage={false}/>
 
             <View style={styles.Container2}>
               <View style={styles.Container21}>

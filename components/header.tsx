@@ -2,17 +2,23 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useFonts } from 'expo-font';
 
 interface HeaderProps {
   isOpen: boolean;
   openSideBar: Function;
   isClosable:boolean;
-  url:any
+  url:any;
+  titre:string;
+  ispage:boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ isOpen, openSideBar,isClosable,url }) => {
+const Header: React.FC<HeaderProps> = ({ isOpen, openSideBar,isClosable,url,titre,ispage}) => {
       const router = useRouter();
-  
+   const [fontsLoaded] = useFonts({
+         
+          'Poppins-Bold': require('../assets/fonts/InriaSans-Bold.ttf'),
+        });
   return (
     <View style={styles.container}>
 
@@ -28,10 +34,15 @@ const Header: React.FC<HeaderProps> = ({ isOpen, openSideBar,isClosable,url }) =
 
       {/* Title container */}
       <View style={styles.container2}>
-        <View style={styles.titleContainer}>
+        
+        {!ispage?<View style={styles.titleContainer}>
           <Text style={styles.orangeText}>Orange</Text>
           <Text style={styles.alertText}>Alert</Text>
-        </View>
+        </View>:
+        <View style={styles.titleContainerPage}>
+          <Text style={styles.TextTitle}>{titre}</Text>
+          
+        </View>}
       </View>
 
       {/* User icon container */}
@@ -60,6 +71,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleContainerPage :{
+
+  },
+  TextTitle :{
+    fontSize: 20,
+    textAlign: 'center',
+  padding :10,
+  fontFamily :'Poppins-Bold',
+  marginTop :10,
+  paddingLeft :10,
+  paddingRight:10
+
+  },
   container11: {
     width: 30,
     height: 30,
@@ -69,8 +93,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container31: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,

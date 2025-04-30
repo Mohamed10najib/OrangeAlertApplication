@@ -32,7 +32,7 @@ const ConfirmationDec = () => {
         <SafeAreaProvider>
           <SafeAreaView>
             <View style={styles.container}>
-            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); }} isClosable={true} url='/mainPages/home' />
+            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); } } isClosable={true} url='/mainPages/home' titre={''} ispage={false} />
            <View style={styles.container1}>
             
             <View style={styles.container12}>

@@ -100,7 +100,7 @@ const mapPage = () => {
         <SafeAreaProvider>
           <SafeAreaView>
             <View style={styles.container}>
-            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); }} isClosable={true} url='/mainPages/home' />
+            <Header isOpen={!Isopen} openSideBar={() => { setOpen(true); } } isClosable={true} url='/mainPages/home' titre={''} ispage={true} />
            <View style={styles.container1}>
              <View style={styles.container11}>
                        <TouchableOpacity onPress={ () => {router.push({

@@ -87,8 +87,8 @@ const RegisterFirstStep = () => {
                   height:"100%"}}>
                 <ActivityIndicator size="large" color="orange"></ActivityIndicator>
                 </View>}
-                <View style={styles.containerHeader}><TouchableOpacity onPress={()=>{router.push('/auth/login');}}><Icon name="x" size={30} color="white" /></TouchableOpacity></View>
         <View style={styles.Container}>
+        <View style={styles.containerHeader}><TouchableOpacity onPress={()=>{router.push('/auth/login');}}><Icon name="x" size={30} color="white" /></TouchableOpacity></View>
           <View style={styles.ContainerChild1}>
             <Text style={styles.titleContainer}>
               <Text style={styles.OrangeText}>Orange</Text>
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     right:0,
     width:50,
     height:50,
-    
     borderBottomLeftRadius:'70%',
     justifyContent:'center',
     alignItems :'center'

@@ -122,10 +122,9 @@ const DetailsDeclaration = () => {
               isOpen={!Isopen}
               openSideBar={() => {
                 setOpen(true);
-              }}
+              } }
               isClosable={true}
-              url="/mainPages/home"
-            />
+              url="/mainPages/home" titre='Infos Déclaration' ispage={true}            />
             <View style={styles.container1}>
               <View style={styles.container11}>
                 <TouchableOpacity

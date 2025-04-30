@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Platform,Text, View,ScrollView,Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { Route, useRouter } from 'expo-router';
+import {useRouter } from 'expo-router';
 
 import Icon from 'react-native-vector-icons/Feather'; // Use Feather for wifi-exclamation
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';  // Importing Inter Font weights
@@ -15,8 +15,9 @@ export default function HomeScreen() {
   });
   const router = useRouter();
   if (!fontsLoaded) {
-    return <Text>Loading Fonts...</Text>; // Display a loading text until fonts are ready
+    return <Text>Loading Fonts...</Text>; 
   }
+ 
   return (
    <SafeAreaProvider>
     <SafeAreaView>
